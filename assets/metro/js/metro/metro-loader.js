@@ -32,5 +32,5 @@ var plugins = [
 ];
 
 $.each(plugins, function(i, plugin){
-    $("<script/>").attr('src', 'http://localhost/printing/ci/assets/metro/js/metro/metro-'+plugin+'.js').appendTo($('head'));
+    $("<script/>").attr('src', 'http://localhost/printing/assets/metro/js/metro/metro-'+plugin+'.js').appendTo($('head'));
 });

@@ -33,16 +33,20 @@ if (defined('ENVIRONMENT'))
 	switch (ENVIRONMENT)
 	{
 		case 'development':
-			error_reporting(E_ALL);
+			error_reporting(-1);
+                        ini_set('display_errors', 1);
 		break;
 	
 		case 'testing':
 		case 'production':
-			error_reporting(0);
+			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+                        ini_set('display_errors', 0);
 		break;
 
 		default:
-			exit('The application environment is not set correctly.');
+			header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+                        echo 'The application environment is not set correctly.';
+                        exit(1); // EXIT_* constants not yet defined; 1 is EXIT_ERROR, a generic error.
 	}
 }
 
@@ -140,18 +144,22 @@ if (defined('ENVIRONMENT'))
 		chdir(dirname(__FILE__));
 	}
 
-	if (realpath($system_path) !== FALSE)
+	if (($_temp = realpath($system_path)) !== FALSE)
 	{
-		$system_path = realpath($system_path).'/';
+		$system_path = $_temp.'/';
 	}
-
-	// ensure there's a trailing slash
-	$system_path = rtrim($system_path, '/').'/';
+	else
+	{
+		// Ensure there's a trailing slash
+		$system_path = rtrim($system_path, '/').'/';
+	}
 
 	// Is the system path correct?
 	if ( ! is_dir($system_path))
 	{
-		exit("Your system folder path does not appear to be set correctly. Please open the following file and correct this: ".pathinfo(__FILE__, PATHINFO_BASENAME));
+		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+		echo 'Your system folder path does not appear to be set correctly. Please open the following file and correct this: '.pathinfo(__FILE__, PATHINFO_BASENAME);
+		exit(3); // EXIT_* constants not yet defined; 3 is EXIT_CONFIG.
 	}
 
 /*
@@ -179,17 +187,36 @@ if (defined('ENVIRONMENT'))
 	// The path to the "application" folder
 	if (is_dir($application_folder))
 	{
-		define('APPPATH', $application_folder.'/');
+		if (($_temp = realpath($application_folder)) !== FALSE)
+		{
+			$application_folder = $_temp;
+		}
+
+		define('APPPATH', $application_folder.DIRECTORY_SEPARATOR);
 	}
 	else
 	{
-		if ( ! is_dir(BASEPATH.$application_folder.'/'))
+		if ( ! is_dir(BASEPATH.$application_folder.DIRECTORY_SEPARATOR))
 		{
-			exit("Your application folder path does not appear to be set correctly. Please open the following file and correct this: ".SELF);
+			header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+			echo 'Your application folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
+			exit(3); // EXIT_* constants not yet defined; 3 is EXIT_CONFIG.
 		}
 
-		define('APPPATH', BASEPATH.$application_folder.'/');
+		define('APPPATH', BASEPATH.$application_folder.DIRECTORY_SEPARATOR);
 	}
+
+/*
+|---------------------------------------------------------------
+| DEFAULT TIMEZONE
+|---------------------------------------------------------------
+|
+| Set the default timezone for date/time functions to use if
+| none is set on the server.
+|
+*/
+
+date_default_timezone_set('Asia/Jakarta');
 
 /*
  * --------------------------------------------------------------------
@@ -203,4 +230,3 @@ require_once BASEPATH.'core/CodeIgniter.php';
 
 /* End of file index.php */
 /* Location: ./index.php */
-// tessseeee
