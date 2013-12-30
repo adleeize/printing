@@ -24,9 +24,9 @@
             <div class="span12 padding10 bg-grayLighter">
                 <nav class="breadcrumbs">
                     <ul>
-                        <li><a href="<?php echo site_url('kasir/pesanan/all');?>">Semua Pesanan</a></li>
-                        <li><a href="<?php echo site_url('kasir/pesanan/ambil');?>">Pesanan Oke</a></li>
-                        <li><a href="<?php echo site_url('kasir/pesanan');?>">Pesanan Belum Di Ambil</a></li>
+                        <li<?php if($this->uri->segment(3) === "all") echo ' class="active"'; ?>><a href="<?php echo site_url('kasir/pesanan/all');?>">Semua Pesanan</a></li>
+                        <li<?php if($this->uri->segment(3) === "ambil") echo ' class="active"'; ?>><a href="<?php echo site_url('kasir/pesanan/ambil');?>">Pesanan Oke</a></li>
+                        <li<?php if($this->uri->segment(3) === "") echo ' class="active"'; ?>><a href="<?php echo site_url('kasir/pesanan');?>">Pesanan Belum Di Ambil</a></li>
                     </ul>
                 </nav>
                 <h1>
@@ -55,7 +55,7 @@
                         <tr><th>#</th><th>No Order</th><th>Tgl Pesan</th><th>Tgl Ambil</th><th>DP</th><th>Total Harga</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr>
                     </thead>
                     <tbody class="data-pesanan">
-                    <?php $i=1;
+                    <?php if(!empty($list_orders)) { $i=1;
                     foreach ($list_orders as $list_order):
                     ?>
                         <tr class="list-pesanan">
@@ -80,7 +80,12 @@
                         </tr>
                     <?php $i++;
                     endforeach;
+                    } else {
                     ?>
+                        <tr>
+                            <td colspan="9" class="bg-lightBlue fg-white text-center">Tidak ada pesanan</td>
+                        </tr>
+                    <?php } ?>
                     </tbody>
                 </table>
                 <center>
@@ -132,7 +137,7 @@
                 width: 430,
                 padding: 15,
                 content: 'Apakah anda yakin mau menghapus Transaksi ini?' +
-                         '<br/><br/><br/><span style="padding-left:150px;"><button class="primary" id="proses-yes">Yess</button></span>'
+                         '<br/><br/><br/><span style="padding-left:150px;"><button class="primary" id="proses-yes">Yes</button></span>'
             });
             $("#proses-yes").click(function(e){
                 e.preventDefault();
