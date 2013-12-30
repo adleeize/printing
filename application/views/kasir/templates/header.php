@@ -7,8 +7,9 @@
     <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
     <meta name="description" content="Simple responsive css framework">
     <meta name="keywords" content="Metro, ui, responsive, css, framework, library">
-    <link rel="stylesheet" href="<?php echo base_url('assets/metro/css/jquery-ui.css');?>">
+    
     <link rel="stylesheet" href="<?php echo base_url('assets/metro/css/metro-bootstrap.css');?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/metro/css/metro-bootstrap-responsive.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/metro/css/docs.css');?>">
     <link href="<?php echo base_url('assets/metro/js/prettify/prettify.css');?>" rel="stylesheet">
 
@@ -20,7 +21,6 @@
     <script src="<?php echo base_url('assets/metro/js/docs.js');?>"></script>
     <script src="<?php echo base_url('assets/metro/js/github.info.js');?>"></script>
     
-    <script src="<?php echo base_url('assets/metro/js/jquery/jquery-ui.js');?>"></script>
     <title>Kasir</title>
 </head>
 <body class="metro">

@@ -22,16 +22,65 @@
         </div>
         <div class="row border-top">
             <div class="span12 padding10 bg-grayLighter">
+                <nav class="breadcrumbs">
+                    <ul>
+                        <li><a href="<?php echo site_url('kasir/pesanan/all');?>">Semua Pesanan</a></li>
+                        <li><a href="<?php echo site_url('kasir/pesanan/ambil');?>">Pesanan Oke</a></li>
+                        <li><a href="<?php echo site_url('kasir/pesanan');?>">Pesanan Belum Di Ambil</a></li>
+                    </ul>
+                </nav>
                 <h1>
                     <i class="icon-cart fg-darker smaller"></i>
-                    <small class="on-right">Daftar</small>Pesanan
+                <?php
+                    if($this->uri->segment(3) == "all")
+                    {
+                        echo '<small class="on-right">Daftar</small>Semua Pesanan';
+                        $ambil = "all";
+                    }
+                    else if($this->uri->segment(3) == "ambil")
+                    {
+                        echo '<small class="on-right">Daftar</small>Pesanan Oke';
+                        $ambil = "sudah";
+                    }
+                    else
+                    {
+                        echo '<small class="on-right">Daftar</small>Pesanan Belum Di Ambil';
+                        $ambil = "belum";
+                    }
+                ?>
                 </h1>
                 <div><p></p></div>
                 <table class="table hovered">
                     <thead>
-                        <tr><th>#</th><th>No Pesanan</th><th>Tgl Pesan</th><th>DP</th><th>Total Harga</th><th>Status</th><th>Aksi</th></tr>
+                        <tr><th>#</th><th>No Order</th><th>Tgl Pesan</th><th>Tgl Ambil</th><th>DP</th><th>Total Harga</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr>
                     </thead>
                     <tbody class="data-pesanan">
+                    <?php $i=1;
+                    foreach ($list_orders as $list_order):
+                    ?>
+                        <tr class="list-pesanan">
+                            <td><?php echo $i;?><input type="hidden" class="id_transaksi" value="<?php echo $list_order->id_pembelian;?>"></td>
+                            <td align="center"><?php echo $list_order->id_pembelian;?></td>
+                            <td align="center"><?php echo $list_order->order_date;?></td>
+                            <td align="center"><?php $pick = $list_order->pick_date == "" ? "<b class='icon-alarm-clock'></b>" : $list_order->pick_date;echo $pick;?></td>
+                            <td align="center"><?php echo $list_order->dp;?></td>
+                            <td align="center"><?php echo $list_order->total_harga;?></td>
+                            <td align="center"><?php $pembayaran = $list_order->status_pembayaran == 1 ? "<b style='color:green;'>L</b>" : "<b style='color:red;'>BL</b>";echo $pembayaran;?></td>
+                            <td>
+                                <?php $status = $list_order->status_pengambilan == 1 ? "<b style='color:green;' class='icon-checkmark'></b>" : "<b style='color:red;' class='icon-cancel-2'></b>";echo $status;?>
+                            </td>
+                            <td>
+                                <?php if($list_order->status_pengambilan==1){?>
+                                    <button class="primary ambilkan" disabled="true">Proses</button>
+                                <?php }else{?>
+                                    <button class="primary ambilkan">Proses</button>
+                                <?php }?>
+                                <button class="warning hapuskan"><i class="icon-remove"></i></button>
+                            </td>
+                        </tr>
+                    <?php $i++;
+                    endforeach;
+                    ?>
                     </tbody>
                 </table>
                 <center>
@@ -47,3 +96,50 @@
             </div>
         </div>
     </div>
+    <script>
+    $(document).ready(function(){
+        $(".ambilkan").click(function(e){
+            e.preventDefault();
+            var id = $(this).parent().parent().find(".id_transaksi").val();;
+            // alert(id);
+            $.Dialog({
+                shadow: true,
+                overlay: false,
+                icon: '<span class="icon-rocket"></span>',
+                title: 'Proses Transaksi',
+                width: 430,
+                padding: 15,
+                content: 'Apakah anda yakin mau memproses Transaksi ini?' +
+                         '<br/><br/><br/><span style="padding-left:150px;"><button class="primary" id="proses-yes">Yess</button></span>'
+            });
+            $("#proses-yes").click(function(e){
+                e.preventDefault();
+                $.get('<?php echo site_url("kasir/proses_transaksi");?>',{id : id}, function(data) {
+                    location.reload();
+                });
+            });
+        });
+
+        $(".hapuskan").click(function(e){
+            e.preventDefault();
+            var id = $(this).parent().parent().find(".id_transaksi").val();;
+            // alert(id);
+            $.Dialog({
+                shadow: true,
+                overlay: false,
+                icon: '<span class="icon-remove"></span>',
+                title: 'Delete Transaksi',
+                width: 430,
+                padding: 15,
+                content: 'Apakah anda yakin mau menghapus Transaksi ini?' +
+                         '<br/><br/><br/><span style="padding-left:150px;"><button class="primary" id="proses-yes">Yess</button></span>'
+            });
+            $("#proses-yes").click(function(e){
+                e.preventDefault();
+                $.get('<?php echo site_url("kasir/delete_transaksi");?>',{id : id}, function(data) {
+                    location.reload();
+                });
+            });
+        });
+    });
+    </script>
