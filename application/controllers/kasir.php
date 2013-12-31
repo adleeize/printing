@@ -4,7 +4,6 @@ class Kasir extends CI_Controller {
 	function __construct()
 	{
         parent::__construct();
-        date_default_timezone_set('Asia/Jakarta');
         $this->load->helper(array('form', 'url','date'));
         $this->load->model('kasir_model','',TRUE);
         
@@ -159,7 +158,6 @@ class Kasir extends CI_Controller {
         $data_beli = $this->kasir_model->get_pembelian($id_pembelian);
         
         $arr_beli = array();
-        $i = 0;
         foreach($data_beli as $beli) {
             $order_date = $beli->order_date;
             $pick_date = $beli->pick_date;
@@ -217,35 +215,35 @@ class Kasir extends CI_Controller {
         $this->pdf->SetFont('Arial', 'B', 12);
         
         $this->pdf->SetX(15);
-        $this->pdf->Cell(90, 8, 'Garuda Digital Printing', 'LTR', '', '');
+        $this->pdf->Cell(90, 8, 'Garuda Digital Printing', 'LTR');
         
         $this->pdf->SetFont('Arial', '', 12);
         
         $this->pdf->SetX(115);
-        $this->pdf->Cell(36, 8, 'Disc         0,00  %', 'LTR', '', '');
+        $this->pdf->Cell(36, 8, 'Disc         0,00  %', 'LTR');
         
         $this->pdf->SetX(160);
-        $this->pdf->Cell(87, 8, 'Order Date      '.$order_date, 'LTR', '', '');
+        $this->pdf->Cell(87, 8, 'Order Date      '.$order_date, 'LTR');
         $this->pdf->Ln();
         
         $this->pdf->SetX(15);
-        $this->pdf->Cell(90, 6, 'Semarang', 'LR', '', '');
+        $this->pdf->Cell(90, 6, 'Semarang', 'LR');
         
         $this->pdf->SetX(115);
-        $this->pdf->Cell(36, 6, 'PPN         0,00  %', 'LR', '', '');
+        $this->pdf->Cell(36, 6, 'PPN         0,00  %', 'LR');
         
         $this->pdf->SetX(160);
-        $this->pdf->Cell(87, 6, 'Pick Date        '.$pick_date, 'LBR', '', '');
+        $this->pdf->Cell(87, 6, 'Pick Date        '.$pick_date, 'LBR');
         $this->pdf->Ln();
         
         $this->pdf->SetX(15);
-        $this->pdf->Cell(90, 6, 'Semarang, Telp. X', 'LRB', '', '');
+        $this->pdf->Cell(90, 6, 'Semarang, Telp. X', 'LRB');
         
         $this->pdf->SetX(115);
-        $this->pdf->Cell(36, 6, '', 'LRB', '', '');
+        $this->pdf->Cell(36, 6, '', 'LRB');
         
         $this->pdf->SetX(160);
-        $this->pdf->Cell(87, 6, 'TOP                '.date('d-m-Y', time()), 'LRB', '', '');
+        $this->pdf->Cell(87, 6, 'TOP                '.date('d-m-Y', time()), 'LRB');
         $this->pdf->Ln(15);
         
         $this->pdf->SetFont('Arial', 'B', 12);
