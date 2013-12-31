@@ -2,8 +2,8 @@
         <div class="row">
             <div class="span8 bg-white">
                 <div class="padding20 introduce bg-amber">
-                    <h1 class="ntm fg-white">Kasir Hartono</h1>
-                    <p class="fg-white">No. Pegawai : 172.16.10.17</p>
+                    <h1 class="ntm fg-white">Kasir <?php echo ucwords($this->session->userdata('name')); ?></h1>
+                    <p class="fg-white">No. Pegawai : <?php echo $this->session->userdata('no_pegawai'); ?></p>
                     <p class="fg-white item-title">Adukan karyawan kami jika anda merasa ada sesuatu yang kurang beres.</p>
                 </div>
                 <div class="row">

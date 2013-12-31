@@ -6,12 +6,13 @@ class Kasir extends CI_Controller {
         parent::__construct();
         $this->load->helper(array('form', 'url','date'));
         $this->load->model('kasir_model','',TRUE);
+        $this->data = NULL;
+        
+        if(!$this->session->userdata('id')) redirect('login');
     }
 
     function index()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
     	$this->load->view('kasir/templates/header');
     	$this->load->view('kasir/transaksi');
     	$this->load->view('kasir/templates/footer');
@@ -19,29 +20,25 @@ class Kasir extends CI_Controller {
 
     function pesanan()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         if($this->uri->segment(3) == "all")
         {
-            $details['list_orders'] = $this->kasir_model->get_list_orders();
+            $this->kasir_model->get_list_orders();
         }
         else if($this->uri->segment(3) == "ambil")
         {
-            $details['list_orders'] = $this->kasir_model->get_list_orders_ambil();   
+            $this->kasir_model->get_list_orders_ambil();   
         }
         else
         {
-            $details['list_orders'] = $this->kasir_model->get_list_orders_belum();
+            $this->kasir_model->get_list_orders_belum();
         }
         $this->load->view('kasir/templates/header');
-        $this->load->view('kasir/order',$details);
+        $this->load->view('kasir/order', $this->data);
         $this->load->view('kasir/templates/footer');
     }
 
     function members()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $details['list_members'] = $this->kasir_model->get_list_members() == FALSE ? '' : $this->kasir_model->get_list_members();
         $this->load->view('kasir/templates/header');
         $this->load->view('kasir/anggota',$details);
@@ -50,8 +47,6 @@ class Kasir extends CI_Controller {
 
     function autocomplete_barang()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
     	$name = $this->input->get('q');
     	$res = $this->kasir_model->get_like_barang($name);
     	
@@ -60,8 +55,6 @@ class Kasir extends CI_Controller {
 
     function barang_masuk()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $name = $this->input->get('name');
         $details = $this->kasir_model->get_barang($name);
 
@@ -70,8 +63,6 @@ class Kasir extends CI_Controller {
 
     function register_member()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $no_id = $this->input->get('no_ktp');
         $nama = $this->input->get('nama');
         $pekerjaan = $this->input->get('pekerjaan');
@@ -85,8 +76,6 @@ class Kasir extends CI_Controller {
 
     function edit_member()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $id = $this->input->get('edit-id');
         $no_id = $this->input->get('no_ktp');
         $nama = $this->input->get('nama');
@@ -100,8 +89,6 @@ class Kasir extends CI_Controller {
 
     function hapus_member()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $id = $this->input->get('id');
 
         $this->kasir_model->delete_member($id);
@@ -110,8 +97,6 @@ class Kasir extends CI_Controller {
 
     function cek_member()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $no_ktp = $this->input->get('id');
 
         $res = $this->kasir_model->get_member($no_ktp);
@@ -122,8 +107,6 @@ class Kasir extends CI_Controller {
 
     function transaksi_pembelian()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $dp = $this->input->post('dp');
         $harga = $this->input->post('tot_harga');
         // $pick_date = $this->input->post('tgl_ambil');
@@ -140,8 +123,6 @@ class Kasir extends CI_Controller {
 
     function detail_transaksi_pembelian()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         $id_pembelian = $this->input->post('id_trans');
         $id_barang = $this->input->post('id_barang');
         $jumlah_barang = $this->input->post('jumlah_brg');
@@ -154,8 +135,6 @@ class Kasir extends CI_Controller {
 
     function proses_transaksi()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-
         if(isset($_GET['id']))
         {
             $id = $this->input->get('id');
@@ -165,8 +144,6 @@ class Kasir extends CI_Controller {
 
     function delete_transaksi()
     {
-        if(!$this->session->userdata('id')) redirect('login');
-        
         if(isset($_GET['id']))
         {
             $id = $this->input->get('id');

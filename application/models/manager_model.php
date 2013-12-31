@@ -466,13 +466,11 @@ class Manager_model extends CI_Model{
     }
     
     function update_manager() {
-//        $this->load->library('session');
         $this->load->library('form_validation');
 
         $validation_rules = array(
             array('field' => 'nama', 'label' => 'Nama', 'rules' => 'required'),
             array('field' => 'password', 'label' => 'Password', 'rules' => 'required'),
-            array('field' => 'email', 'label' => 'Email', 'rules' => 'required|valid_email|email_available'),
             array('field' => 'identitas', 'label' => 'No Pegawai', 'rules' => 'required'),
             array('field' => 'no_telp', 'label' => 'Nomor Telepon', 'rules' => 'required'),
             array('field' => 'kota', 'label' => 'Kota', 'rules' => 'required')
@@ -482,12 +480,11 @@ class Manager_model extends CI_Model{
         $this->form_validation->set_error_delimiters('<p style="color:#e51400">', '</p>');
 
         if ($this->form_validation->run()) {
-            $id_manager = $this->session->userdata('id');
+//            $id_manager = $this->session->userdata('id');
             $nama = $this->input->post('nama');
             $no_peg = $this->input->post('identitas');
             
             $data = array(
-                'uacc_email' => $this->input->post('email'),
                 'uacc_name' => $nama,
                 'uacc_no_peg' => $no_peg,
                 'uacc_phone' => $this->input->post('no_telp'),
@@ -495,15 +492,13 @@ class Manager_model extends CI_Model{
             );
             
             $this->db->trans_start();
-            $this->db->update('user_accounts', $data, array('uacc_id' => $id_manager));
+            $this->db->update('user_accounts', $data, array('uacc_id' => $this->data['id_manager']));
             $this->db->trans_complete();
             
             if ($this->db->trans_status() === TRUE) {
-                $array_items = array('name' => '', 'no_peg' => '');
-                $this->session->unset_userdata($array_items);
+                $this->session->unset_userdata(array('name' => '', 'no_pegawai' => ''));
                 
-                $array_items = array('name' => $nama, 'no_peg' => $no_peg);
-                $this->session->set_userdata($array_items);
+                $this->session->set_userdata(array('name' => $nama, 'no_pegawai' => $no_peg));
                 
                 $this->session->set_flashdata('response', 'success');
                 $this->session->set_flashdata('message', 'Update profil berhasil!!');

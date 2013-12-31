@@ -255,7 +255,7 @@ class Kasir_model extends CI_Model{
         $total_pembelian = $this->db->count_all_results();
 
         $this->db->select('id_pembelian,dp,total_harga,order_date,pick_date,status_pembayaran,status_pengambilan,id_member,id_fk_account');
-        $this->db->order_by('order_date', 'desc');
+        $this->db->order_by('order_date', 'asc');
         $this->db->where('status_pengambilan', 0);
         $query = $this->db->get('pembelian', $limit, $offset);
         $this->data['list_orders'] = $query->result();
