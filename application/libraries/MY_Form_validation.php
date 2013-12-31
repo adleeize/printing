@@ -29,7 +29,7 @@ class MY_Form_validation extends CI_Form_validation {
     protected function identitas_available($identitas) {
         $query = $this->CI->db->get_where('member', array('no_identitas' => $identitas));
         if($query->num_rows() > 0) {
-            $this->CI->form_validation->set_message('email_available', ' %s sudah terdaftar');
+            $this->CI->form_validation->set_message('identitas_available', ' %s sudah terdaftar');
             return FALSE;
         }
         return TRUE;
