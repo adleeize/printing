@@ -195,7 +195,6 @@ class Kasir_model extends CI_Model{
         $uri_segment = 5;
         
         $this->db->select('id_pembelian');
-        $this->db->order_by('pick_date', 'desc');
         $this->db->where('status_pengambilan', 1);
         $this->db->from('pembelian');
         $total_pembelian = $this->db->count_all_results();
@@ -251,13 +250,12 @@ class Kasir_model extends CI_Model{
         $uri_segment = 4;
         
         $this->db->select('id_pembelian');
-        $this->db->order_by('order_date', 'desc');
         $this->db->where('status_pengambilan', 0);
         $this->db->from('pembelian');
         $total_pembelian = $this->db->count_all_results();
 
         $this->db->select('id_pembelian,dp,total_harga,order_date,pick_date,status_pembayaran,status_pengambilan,id_member,id_fk_account');
-        $this->db->order_by('order_date', 'desc');
+        $this->db->order_by('order_date', 'asc');
         $this->db->where('status_pengambilan', 0);
         $query = $this->db->get('pembelian', $limit, $offset);
         $this->data['list_orders'] = $query->result();
@@ -333,11 +331,6 @@ class Kasir_model extends CI_Model{
                                detail_pembelian.banyak_beli, 
                                detail_pembelian.harga, 
                                pembelian.total_harga");
-            $this->db->from('pembelian');
-            $this->db->join('detail_pembelian', 'detail_pembelian.id_fk_pembelian = pembelian.id_pembelian');
-            $this->db->join('detail_barang', 'detail_barang.id_barang = detail_pembelian.id_fk_detail_barang');
-            $this->db->where('pembelian.id_pembelian', $id_pembelian);
-            $query = $this->db->get();
         } else {
             $this->db->select("pembelian.id_pembelian,
                                pembelian.order_date, 
@@ -349,13 +342,13 @@ class Kasir_model extends CI_Model{
                                detail_pembelian.banyak_beli, 
                                detail_pembelian.harga, 
                                pembelian.total_harga");
-            $this->db->from('pembelian');
-            $this->db->join('detail_pembelian', 'detail_pembelian.id_fk_pembelian = pembelian.id_pembelian');
-            $this->db->join('detail_barang', 'detail_barang.id_barang = detail_pembelian.id_fk_detail_barang');
-            $this->db->where('pembelian.id_pembelian', $id_pembelian);
-            $query = $this->db->get();
         }
+        $this->db->from('pembelian');
+        $this->db->join('detail_pembelian', 'detail_pembelian.id_fk_pembelian = pembelian.id_pembelian');
+        $this->db->join('detail_barang', 'detail_barang.id_barang = detail_pembelian.id_fk_detail_barang');
+        $this->db->where('pembelian.id_pembelian', $id_pembelian);
+        $query = $this->db->get();
+            
         return $query->result();
-        
     }
 }

@@ -1,41 +1,36 @@
 <?php
 
 class Login extends CI_Controller {
-	function __construct()
-	{
+    function __construct() {
         parent::__construct();
-        date_default_timezone_set('Asia/Jakarta');
-        $this->load->library('session');
-        $this->load->helper(array('form', 'url','date'));
-        $this->load->model('login_model','',TRUE);
+        $this->load->helper(array('form', 'url'));
+        $this->load->model('login_model', '', TRUE);
+        
+        if($this->session->userdata('id') && uri_string() != 'login/logout') {
+            if ($this->session->userdata('role') == 1) {
+                redirect('kasir');
+            } else if ($this->session->userdata('role') == 2) {
+                redirect('manager');
+            }
+        }
     }
 
     function index()
     {
-        $sesi=$this->session->userdata('email');
-        if($sesi=='')
-        {
-
-    		$details['list_roles'] = $this->login_model->get_list_role();
-            $this->load->view('login',$details);
-        }
-        else
-        {
-            redirect(base_url('adminmuntira'));
-        }
-
+        $details['list_roles'] = $this->login_model->get_list_role();
+        $this->load->view('login',$details);
     }
     
     function verifikasi()
     {
         //This method will have the credentials validation
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email,xss_clean');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database');
- 		$this->form_validation->set_message('required', 'isi dengan lengkap bro');
-        if($this->form_validation->run() == FALSE)
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|callback_check_database');
+        $this->form_validation->set_message('required', 'isi dengan lengkap bro');
+        if($this->form_validation->run() === FALSE)
         {
-        	$details['list_roles'] = $this->login_model->get_list_role();
+            $details['list_roles'] = $this->login_model->get_list_role();
             $this->load->view('login',$details);
         }
         else
@@ -43,11 +38,11 @@ class Login extends CI_Controller {
 	       //Go to private area
             if($this->session->userdata('role')==1)
             {
-            	redirect('kasir.php');
+            	redirect('kasir');
             }
             else if($this->session->userdata('role')==2)
             {
-            	redirect('manager.php');
+            	redirect('manager');
             }
             else
             {
@@ -88,8 +83,6 @@ class Login extends CI_Controller {
         $this->session->sess_destroy();
         redirect('login');
     }
-    
-
 }
 
 /* End of file login.php */

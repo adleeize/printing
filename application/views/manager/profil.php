@@ -3,8 +3,8 @@
         <div class="row">
             <div class="span8 bg-white">
                 <div class="padding20 introduce bg-amber">
-                    <h1 class="ntm fg-white">Manager Hartono</h1>
-                    <p class="fg-white">No. Pegawai : 172.16.10.17</p>
+                    <h2 class="ntm fg-white">Manager <?php echo ucwords($this->session->userdata('name')); ?></h2>
+                    <p class="fg-white">No. Pegawai : <?php echo $this->session->userdata('no_pegawai'); ?></p>
                     <p class="fg-white item-title">Adukan karyawan kami jika anda merasa ada sesuatu yang kurang beres.</p>
                 </div>
                 <div class="row">
@@ -38,7 +38,7 @@
                     </div>
                     <lable>Email</lable>
                     <div class="input-control text<?php $error = form_error('email'); echo!empty($error) ? ' error-state' : ''; ?>" data-role="input-control">
-                        <input type="text" placeholder="Email" name="email" value="<?php echo set_value('email', $manager->uacc_email); ?>">
+                        <input type="text" placeholder="Email" name="email" disabled value="<?php echo set_value('email', $manager->uacc_email); ?>">
                         <button class="btn-clear" tabindex="-1" type="button"></button>
                         <?php echo $error; ?>
                     </div>
