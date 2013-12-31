@@ -10,6 +10,8 @@ class Manager extends CI_Controller {
     }
     
     function index() {
+        if(!$this->session->userdata('id')) redirect('login');
+
         $this->load->model('manager_model');
         
         if($this->input->post('update_barang')) {
@@ -24,6 +26,8 @@ class Manager extends CI_Controller {
     }
     
     function edit_barang($id_barang = FALSE) {
+        if(!$this->session->userdata('id')) redirect('login');
+
         if($this->input->post('edit_barang')) {
             $this->load->model('manager_model');
             $this->manager_model->update_barang($id_barang);
@@ -38,6 +42,8 @@ class Manager extends CI_Controller {
     }
     
     function input_barang() {
+        if(!$this->session->userdata('id')) redirect('login');
+
         if($this->input->post('insert_barang')) {
             $this->load->model('manager_model');
             $this->manager_model->input_barang();
@@ -47,6 +53,8 @@ class Manager extends CI_Controller {
     }
     
     function member() {
+        if(!$this->session->userdata('id')) redirect('login');
+
         $this->load->model('manager_model');
         
         if($this->input->post('update_member')) {
@@ -61,6 +69,8 @@ class Manager extends CI_Controller {
     }
     
     function input_member() {
+        if(!$this->session->userdata('id')) redirect('login');
+
         if($this->input->post('insert_member')) {
             $this->load->model('manager_model');
             $this->manager_model->input_member();
@@ -70,6 +80,8 @@ class Manager extends CI_Controller {
     }
     
     function edit_member($id_member = FALSE) {
+        if(!$this->session->userdata('id')) redirect('login');
+
         if($this->input->post('edit_member')) {
             $this->load->model('manager_model');
             $this->manager_model->update_member($id_member);
@@ -84,6 +96,8 @@ class Manager extends CI_Controller {
     }
     
     function kasir() {
+        if(!$this->session->userdata('id')) redirect('login');
+
         $this->load->model('manager_model');
         
         if($this->input->post('update_kasir')) {
@@ -98,6 +112,8 @@ class Manager extends CI_Controller {
     }
     
     function input_kasir() {
+        if(!$this->session->userdata('id')) redirect('login');
+
         if($this->input->post('insert_kasir')) {
             $this->load->model('manager_model');
             $this->manager_model->input_kasir();
@@ -107,6 +123,8 @@ class Manager extends CI_Controller {
     }
     
     function edit_kasir($id_kasir = FALSE) {
+        if(!$this->session->userdata('id')) redirect('login');
+
         if($this->input->post('edit_kasir')) {
             $this->load->model('manager_model');
             $this->manager_model->update_kasir($id_kasir);
@@ -121,6 +139,8 @@ class Manager extends CI_Controller {
     }
     
     function profil() {
+        if(!$this->session->userdata('id')) redirect('login');
+
         $this->load->model('manager_model');
         
         if($this->input->post('update_profil')) {
@@ -135,6 +155,8 @@ class Manager extends CI_Controller {
     }
     
     function password() {
+        if(!$this->session->userdata('id')) redirect('login');
+        
         $this->load->model('manager_model');
         
         if($this->input->post('update_password')) {
