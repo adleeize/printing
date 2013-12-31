@@ -116,7 +116,7 @@
                 width: 430,
                 padding: 15,
                 content: 'Apakah anda yakin mau memproses Transaksi ini?' +
-                         '<br/><br/><br/><span style="padding-left:150px;"><button class="primary" id="proses-yes">Yess</button></span>'
+                         '<br/><br/><br/><span style="padding-left:150px;"><button class="primary" id="proses-yes">Yes</button></span>'
             });
             $("#proses-yes").click(function(e){
                 e.preventDefault();
