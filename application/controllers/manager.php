@@ -135,15 +135,21 @@ class Manager extends CI_Controller {
         $this->data['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];
         $this->load->view('manager/profil', $this->data);
     }
+
+    function profile1()
+    {
+        $this->load->model('manager_model');   
+        if($this->input->post('update_profil')) {
+            $this->manager_model->update_manager();
+        }
+    }
     
     function password() {
         $this->load->model('manager_model');
         
         if($this->input->post('update_password')) {
-            $this->manager_model->update_manager();
+            $this->manager_model->change_password();
         }
-        
-        $this->manager_model->change_password();
         
         $this->data['response'] = (!isset($this->data['response'])) ? $this->session->flashdata('response') : $this->data['response'];
         $this->data['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];

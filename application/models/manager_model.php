@@ -467,10 +467,11 @@ class Manager_model extends CI_Model{
     
     function update_manager() {
         $this->load->library('form_validation');
+        // echo $this->input->post('id');        
 
         $validation_rules = array(
             array('field' => 'nama', 'label' => 'Nama', 'rules' => 'required'),
-            array('field' => 'password', 'label' => 'Password', 'rules' => 'required'),
+            // array('field' => 'password', 'label' => 'Password', 'rules' => 'required'),
             array('field' => 'identitas', 'label' => 'No Pegawai', 'rules' => 'required'),
             array('field' => 'no_telp', 'label' => 'Nomor Telepon', 'rules' => 'required'),
             array('field' => 'kota', 'label' => 'Kota', 'rules' => 'required')
@@ -480,9 +481,10 @@ class Manager_model extends CI_Model{
         $this->form_validation->set_error_delimiters('<p style="color:#e51400">', '</p>');
 
         if ($this->form_validation->run()) {
-//            $id_manager = $this->session->userdata('id');
+            $id_manager = $this->input->post('id');
             $nama = $this->input->post('nama');
             $no_peg = $this->input->post('identitas');
+            echo $id_manager;
             
             $data = array(
                 'uacc_name' => $nama,
@@ -492,7 +494,7 @@ class Manager_model extends CI_Model{
             );
             
             $this->db->trans_start();
-            $this->db->update('user_accounts', $data, array('uacc_id' => $this->data['id_manager']));
+            $this->db->update('user_accounts', $data, array('uacc_id' => $id_manager));
             $this->db->trans_complete();
             
             if ($this->db->trans_status() === TRUE) {
@@ -509,10 +511,9 @@ class Manager_model extends CI_Model{
 
             redirect('manager/profil');
         }
-
         return FALSE;
     }
-    
+
     function change_password() {
         $this->load->library('form_validation');
 
