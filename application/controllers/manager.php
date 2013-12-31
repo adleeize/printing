@@ -7,7 +7,7 @@ class Manager extends CI_Controller {
         $this->load->helper(array('form', 'url', 'date'));
         $this->data = null;
         
-        if(!$this->session->userdata('id')) redirect('login');
+        if($this->session->userdata('id')!=2) redirect('login');
         $this->data['id_manager'] = $this->session->userdata('id');
     }
     

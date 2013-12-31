@@ -8,7 +8,7 @@ class Kasir extends CI_Controller {
         $this->load->model('kasir_model','',TRUE);
         $this->data = NULL;
         
-        if(!$this->session->userdata('id')) redirect('login');
+        if($this->session->userdata('id')!=1) redirect('login');
     }
 
     function index()
