@@ -50,9 +50,9 @@
                     </thead>
                     <tbody>
                         <?php if(!empty($list_kasir)) {
-                                $no = 1; foreach($list_kasir as $kasir) { ?>
+                                foreach($list_kasir as $kasir) { ?>
                         <tr>
-                            <td><?php echo $no++; ?></td>
+                            <td><?php echo $number++; ?></td>
                             <td class="text-left"><a href="<?php echo site_url('manager/edit_kasir/'.$kasir->uacc_id); ?>" title="Edit"><?php echo ucwords($kasir->uacc_name); ?></a></td>
                             <td class="text-center"><?php echo $kasir->uacc_email; ?></td>
                             <td class="text-center"><?php echo $kasir->uacc_no_peg; ?></td>
@@ -68,7 +68,7 @@
                     </tbody>
                 </table>
                 </form>
-                <?php if(!empty($list_kasir)) { echo $pagination['links']; } ?>
+                <?php echo $pagination['links']; ?>
             </div>
         </div>
     </div>

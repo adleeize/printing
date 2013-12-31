@@ -49,9 +49,9 @@
                     </thead>
                     <tbody>
                         <?php if(!empty($list_member)) {
-                                $no = 1; foreach($list_member as $member) { ?>
+                                foreach($list_member as $member) { ?>
                         <tr>
-                            <td><?php echo $no++; ?></td>
+                            <td><?php echo $number++; ?></td>
                             <td class="text-left"><a href="<?php echo site_url('manager/edit_member/'.$member->id); ?>" title="Edit"><?php echo ucwords($member->nama); ?></a></td>
                             <td class="text-center"><?php echo ucwords($member->pekerjaan); ?></td>
                             <td class="text-center"><?php echo $member->no_telp; ?></td>
@@ -66,7 +66,7 @@
                     </tbody>
                 </table>
                 </form>
-                <?php if(!empty($list_member)) { echo $pagination['links']; } ?>
+                <?php echo $pagination['links']; ?>
             </div>
         </div>
     </div>
