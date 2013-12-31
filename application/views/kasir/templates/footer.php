@@ -19,7 +19,7 @@
                 <div class="span3 padding20 nrp">
                     <ul class="unstyled">
                         <li><a class="button info span3 margin5"  href="https://github.com/olton/Metro-UI-CSS">Tentang Kami</a></li>
-                        <li><a class="button warning span3 margin5"  href="#">Logout</a></li>
+                        <li><a class="button warning span3 margin5"  href="<?php echo site_url('login/logout');?>">Logout</a></li>
                     </ul>
                 </div>
             </div>
