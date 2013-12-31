@@ -55,11 +55,11 @@
                         <tr><th>#</th><th>No Order</th><th>Tgl Pesan</th><th>Tgl Ambil</th><th>DP</th><th>Total Harga</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr>
                     </thead>
                     <tbody class="data-pesanan">
-                    <?php if(!empty($list_orders)) { $i=1;
+                    <?php if(!empty($list_orders)) {
                     foreach ($list_orders as $list_order):
                     ?>
                         <tr class="list-pesanan">
-                            <td><?php echo $i;?><input type="hidden" class="id_transaksi" value="<?php echo $list_order->id_pembelian;?>"></td>
+                            <td><?php echo $number++;?><input type="hidden" class="id_transaksi" value="<?php echo $list_order->id_pembelian;?>"></td>
                             <td align="center"><?php echo $list_order->id_pembelian;?></td>
                             <td align="center"><?php echo $list_order->order_date;?></td>
                             <td align="center"><?php $pick = $list_order->pick_date == "" ? "<b class='icon-alarm-clock'></b>" : $list_order->pick_date;echo $pick;?></td>
@@ -71,14 +71,14 @@
                             </td>
                             <td>
                                 <?php if($list_order->status_pengambilan==1){?>
-                                    <button class="primary ambilkan" disabled="true">Proses</button>
+                                    <a href="<?php echo site_url('kasir/cetak_nota/'.$list_order->id_pembelian); ?>" class="button default">Cetak Nota</a>
                                 <?php }else{?>
                                     <button class="primary ambilkan">Proses</button>
                                 <?php }?>
                                 <button class="warning hapuskan"><i class="icon-remove"></i></button>
                             </td>
                         </tr>
-                    <?php $i++;
+                    <?php
                     endforeach;
                     } else {
                     ?>
@@ -88,6 +88,7 @@
                     <?php } ?>
                     </tbody>
                 </table>
+                <?php echo $pagination['links']; ?>
                 <center>
                     <!-- <button class="shortcut danger">
                         <i class="icon-cancel"></i>

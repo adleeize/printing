@@ -50,9 +50,9 @@
                     </thead>
                     <tbody>
                         <?php if(!empty($list_barang)) {
-                                $no = 1; foreach($list_barang as $barang) { ?>
+                                foreach($list_barang as $barang) { ?>
                         <tr>
-                            <td><?php echo $no++; ?></td>
+                            <td><?php echo $number++; ?></td>
                             <td class="right"><a href="<?php echo site_url('manager/edit_barang/'.$barang->id_barang); ?>" title="Edit"><?php echo $barang->nama_barang; ?></a></td>
                             <td class="right"><?php echo $barang->satuan; ?></td>
                             <td class="text-right"><?php echo number_format($barang->harga_beli, 0, '', '.'); ?></td>
@@ -68,7 +68,7 @@
                     </tbody>
                 </table>
                 </form>
-                <?php if(!empty($list_barang)) { echo $pagination['links']; } ?>
+                <?php echo $pagination['links']; ?>
             </div>
         </div>
     </div>

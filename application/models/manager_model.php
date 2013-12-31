@@ -15,7 +15,7 @@ class Manager_model extends CI_Model{
         $uri = $this->uri->uri_to_assoc(3);
 
         $limit = 10;
-        $offset = (isset($uri['page'])) ? ($uri['page'] * $limit) - $limit : FALSE;
+        $offset = (isset($uri['page']) && $uri['page'] > 0) ? ($uri['page'] * $limit) - $limit : FALSE;
 
         $pagination_url = 'manager/index/';
         $uri_segment = 4;
@@ -56,6 +56,7 @@ class Manager_model extends CI_Model{
 
         $this->data['pagination']['links'] = $this->pagination->create_links();
         $this->data['pagination']['total_users'] = $total_barang;
+        $this->data['number'] = $offset + 1;
     }
     
     function delete_barang() {
@@ -158,7 +159,7 @@ class Manager_model extends CI_Model{
         $uri = $this->uri->uri_to_assoc(3);
 
         $limit = 10;
-        $offset = (isset($uri['page'])) ? ($uri['page'] * $limit) - $limit : FALSE;
+        $offset = (isset($uri['page']) && $uri['page'] > 0) ? ($uri['page'] * $limit) - $limit : FALSE;
 
         $pagination_url = 'manager/member/';
         $uri_segment = 4;
@@ -200,6 +201,7 @@ class Manager_model extends CI_Model{
 
         $this->data['pagination']['links'] = $this->pagination->create_links();
         $this->data['pagination']['total_users'] = $total_member;
+        $this->data['number'] = $offset + 1;
     }
     
     function input_member() {
@@ -303,16 +305,20 @@ class Manager_model extends CI_Model{
         $uri = $this->uri->uri_to_assoc(3);
 
         $limit = 10;
-        $offset = (isset($uri['page'])) ? ($uri['page'] * $limit) - $limit : FALSE;
+        $offset = (isset($uri['page']) && $uri['page'] > 0) ? ($uri['page'] * $limit) - $limit : FALSE;
 
         $pagination_url = 'manager/kasir/';
         $uri_segment = 4;
+        
+        $this->db->select('uacc_id');
+        $this->db->where('uacc_group_fk', 1);
+        $this->db->from('user_accounts');
+        $total_kasir = $this->db->count_all_results();
 
         $this->db->order_by('uacc_date_added', 'desc'); 
         $this->db->where('uacc_group_fk', 1);
         $query = $this->db->get('user_accounts', $limit, $offset);
         $this->data['list_kasir'] = $query->result();
-        $total_kasir = $query->num_rows();
 
         $this->load->library('pagination');
         $config = array(
@@ -345,6 +351,7 @@ class Manager_model extends CI_Model{
 
         $this->data['pagination']['links'] = $this->pagination->create_links();
         $this->data['pagination']['total_users'] = $total_kasir;
+        $this->data['number'] = $offset + 1;
     }
     
     function input_kasir() {

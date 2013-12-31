@@ -1,11 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Kasir_model extends CI_Model{
+    
+    public function &__get($key) {
+        $CI = & get_instance();
+        return $CI->$key;
+    }
 
-	function __construct() 
-	{
+    function __construct() {
         parent::__construct();
-        $this->db = $this->load->database('default',true);
+        $this->db = $this->load->database('default', true);
     }
 
     function get_like_barang($name)
@@ -132,37 +136,164 @@ class Kasir_model extends CI_Model{
 
     function get_list_orders()
     {
+        $uri = $this->uri->uri_to_assoc(4);
+
+        $limit = 10;
+        $offset = (isset($uri['page']) && $uri['page'] > 0) ? ($uri['page'] * $limit) - $limit : FALSE;
+
+        $pagination_url = 'kasir/pesanan/all/';
+        $uri_segment = 5;
+
+        $total_pembelian = $this->db->count_all('pembelian');
+
         $this->db->select('id_pembelian,dp,total_harga,order_date,pick_date,status_pembayaran,status_pengambilan,id_member,id_fk_account');
-        $sql = $this->db->get('pembelian');
-        if($sql->num_rows()>0)
-        {
-            return $sql->result();
-        }
-        else return FALSE;
+        $query = $this->db->get('pembelian', $limit, $offset);
+        $this->data['list_orders'] = $query->result();
+
+        $this->load->library('pagination');
+        $config = array(
+            'base_url' => base_url($pagination_url . 'page/'),
+            'total_rows' => $total_pembelian,
+            'per_page' => $limit,
+            'uri_segment' => $uri_segment,
+            'num_links' => 2,
+            'use_page_numbers' => TRUE,
+            'full_tag_open' => '<div class="pagination"><ul>',
+            'full_tag_close' => '</ul></div>',
+            'first_link' => '<i class="icon-first-2"></i>',
+            'first_tag_open' => '<li class="first">',
+            'first_tag_close' => '</li>',
+            'last_link' => '<i class="icon-last-2"></i>',
+            'last_tag_open' => '<li class="last">',
+            'last_tag_close' => '</li>',
+            'next_link' => '<i class="icon-next"></i>',
+            'next_tag_open' => '<li class="next">',
+            'next_tag_close' => '</li>',
+            'prev_link' => '<i class="icon-previous"></i>',
+            'prev_tag_open' => '<li class="prev">',
+            'prev_tag_close' => '</li>',
+            'cur_tag_open' => '<li class="active"><a>',
+            'cur_tag_close' => '</a></li>',
+            'num_tag_open' => '<li>',
+            'num_tag_close' => '</li>'
+        );
+        $this->pagination->initialize($config);
+
+        $this->data['pagination']['links'] = $this->pagination->create_links();
+        $this->data['pagination']['total_pembelian'] = $total_pembelian;
+        $this->data['number'] = $offset+1;
     }
 
     function get_list_orders_ambil()
     {
-        $this->db->select('id_pembelian,dp,total_harga,order_date,pick_date,status_pembayaran,status_pengambilan,id_member,id_fk_account');
+        $uri = $this->uri->uri_to_assoc(4);
+
+        $limit = 10;
+        $offset = (isset($uri['page']) && $uri['page'] > 0) ? ($uri['page'] * $limit) - $limit : FALSE;
+
+        $pagination_url = 'kasir/pesanan/ambil/';
+        $uri_segment = 5;
+        
+        $this->db->select('id_pembelian');
+        $this->db->order_by('pick_date', 'desc');
         $this->db->where('status_pengambilan', 1);
-        $sql = $this->db->get('pembelian');
-        if($sql->num_rows()>0)
-        {
-            return $sql->result();
-        }
-        else return FALSE;
+        $this->db->from('pembelian');
+        $total_pembelian = $this->db->count_all_results();
+
+        $this->db->select('id_pembelian,dp,total_harga,order_date,pick_date,status_pembayaran,status_pengambilan,id_member,id_fk_account');
+        $this->db->order_by('pick_date', 'desc');
+        $this->db->where('status_pengambilan', 1);
+        $query = $this->db->get('pembelian', $limit, $offset);
+        $this->data['list_orders'] = $query->result();
+
+        $this->load->library('pagination');
+        $config = array(
+            'base_url' => base_url($pagination_url . 'page/'),
+            'total_rows' => $total_pembelian,
+            'per_page' => $limit,
+            'uri_segment' => $uri_segment,
+            'num_links' => 2,
+            'use_page_numbers' => TRUE,
+            'full_tag_open' => '<div class="pagination"><ul>',
+            'full_tag_close' => '</ul></div>',
+            'first_link' => '<i class="icon-first-2"></i>',
+            'first_tag_open' => '<li class="first">',
+            'first_tag_close' => '</li>',
+            'last_link' => '<i class="icon-last-2"></i>',
+            'last_tag_open' => '<li class="last">',
+            'last_tag_close' => '</li>',
+            'next_link' => '<i class="icon-next"></i>',
+            'next_tag_open' => '<li class="next">',
+            'next_tag_close' => '</li>',
+            'prev_link' => '<i class="icon-previous"></i>',
+            'prev_tag_open' => '<li class="prev">',
+            'prev_tag_close' => '</li>',
+            'cur_tag_open' => '<li class="active"><a>',
+            'cur_tag_close' => '</a></li>',
+            'num_tag_open' => '<li>',
+            'num_tag_close' => '</li>'
+        );
+        $this->pagination->initialize($config);
+
+        $this->data['pagination']['links'] = $this->pagination->create_links();
+        $this->data['pagination']['total_pembelian'] = $total_pembelian;
+        $this->data['number'] = $offset+1;
     }
 
     function get_list_orders_belum()
     {
-        $this->db->select('id_pembelian,dp,total_harga,order_date,pick_date,status_pembayaran,status_pengambilan,id_member,id_fk_account');
+        $uri = $this->uri->uri_to_assoc(3);
+
+        $limit = 10;
+        $offset = (isset($uri['page']) && $uri['page'] > 0) ? ($uri['page'] * $limit) - $limit : FALSE;
+
+        $pagination_url = 'kasir/pesanan/';
+        $uri_segment = 4;
+        
+        $this->db->select('id_pembelian');
+        $this->db->order_by('order_date', 'desc');
         $this->db->where('status_pengambilan', 0);
-        $sql = $this->db->get('pembelian');
-        if($sql->num_rows()>0)
-        {
-            return $sql->result();
-        }
-        else return FALSE;
+        $this->db->from('pembelian');
+        $total_pembelian = $this->db->count_all_results();
+
+        $this->db->select('id_pembelian,dp,total_harga,order_date,pick_date,status_pembayaran,status_pengambilan,id_member,id_fk_account');
+        $this->db->order_by('order_date', 'desc');
+        $this->db->where('status_pengambilan', 0);
+        $query = $this->db->get('pembelian', $limit, $offset);
+        $this->data['list_orders'] = $query->result();
+
+        $this->load->library('pagination');
+        $config = array(
+            'base_url' => base_url($pagination_url . 'page/'),
+            'total_rows' => $total_pembelian,
+            'per_page' => $limit,
+            'uri_segment' => $uri_segment,
+            'num_links' => 2,
+            'use_page_numbers' => TRUE,
+            'full_tag_open' => '<div class="pagination"><ul>',
+            'full_tag_close' => '</ul></div>',
+            'first_link' => '<i class="icon-first-2"></i>',
+            'first_tag_open' => '<li class="first">',
+            'first_tag_close' => '</li>',
+            'last_link' => '<i class="icon-last-2"></i>',
+            'last_tag_open' => '<li class="last">',
+            'last_tag_close' => '</li>',
+            'next_link' => '<i class="icon-next"></i>',
+            'next_tag_open' => '<li class="next">',
+            'next_tag_close' => '</li>',
+            'prev_link' => '<i class="icon-previous"></i>',
+            'prev_tag_open' => '<li class="prev">',
+            'prev_tag_close' => '</li>',
+            'cur_tag_open' => '<li class="active"><a>',
+            'cur_tag_close' => '</a></li>',
+            'num_tag_open' => '<li>',
+            'num_tag_close' => '</li>'
+        );
+        $this->pagination->initialize($config);
+
+        $this->data['pagination']['links'] = $this->pagination->create_links();
+        $this->data['pagination']['total_pembelian'] = $total_pembelian;
+        $this->data['number'] = $offset+1;
     }
 
     function ubah_status_pembelian($id)
@@ -179,5 +310,52 @@ class Kasir_model extends CI_Model{
     function delete_transaksi($id){
         $this->db->where('id_pembelian', $id);
         $this->db->delete('pembelian');
+    }
+    
+    function get_pembelian($id_pembelian) {
+        $this->db->select('pembelian.id_member');
+        $this->db->from('pembelian');
+        $this->db->join('detail_pembelian', 'detail_pembelian.id_fk_pembelian = pembelian.id_pembelian');
+        $this->db->join('detail_barang', 'detail_barang.id_barang = detail_pembelian.id_fk_detail_barang');
+        $this->db->where('pembelian.id_pembelian', $id_pembelian);
+        $query = $this->db->get();
+        
+        $id_member = $query->row()->id_member;
+        
+        if($id_member != 0) {
+            $this->db->select("pembelian.id_pembelian,
+                               pembelian.order_date, 
+                               pembelian.pick_date, 
+                               detail_barang.nama_barang, 
+                               detail_pembelian.ukuran_beli, 
+                               detail_barang.satuan,
+                               detail_barang.harga_jual_member AS harga_jual,
+                               detail_pembelian.banyak_beli, 
+                               detail_pembelian.harga, 
+                               pembelian.total_harga");
+            $this->db->from('pembelian');
+            $this->db->join('detail_pembelian', 'detail_pembelian.id_fk_pembelian = pembelian.id_pembelian');
+            $this->db->join('detail_barang', 'detail_barang.id_barang = detail_pembelian.id_fk_detail_barang');
+            $this->db->where('pembelian.id_pembelian', $id_pembelian);
+            $query = $this->db->get();
+        } else {
+            $this->db->select("pembelian.id_pembelian,
+                               pembelian.order_date, 
+                               pembelian.pick_date, 
+                               detail_barang.nama_barang, 
+                               detail_pembelian.ukuran_beli, 
+                               detail_barang.satuan,
+                               detail_barang.harga_jual_biasa AS harga_jual,
+                               detail_pembelian.banyak_beli, 
+                               detail_pembelian.harga, 
+                               pembelian.total_harga");
+            $this->db->from('pembelian');
+            $this->db->join('detail_pembelian', 'detail_pembelian.id_fk_pembelian = pembelian.id_pembelian');
+            $this->db->join('detail_barang', 'detail_barang.id_barang = detail_pembelian.id_fk_detail_barang');
+            $this->db->where('pembelian.id_pembelian', $id_pembelian);
+            $query = $this->db->get();
+        }
+        return $query->result();
+        
     }
 }
