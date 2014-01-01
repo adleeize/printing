@@ -471,7 +471,6 @@ class Manager_model extends CI_Model{
 
         $validation_rules = array(
             array('field' => 'nama', 'label' => 'Nama', 'rules' => 'required'),
-            // array('field' => 'password', 'label' => 'Password', 'rules' => 'required'),
             array('field' => 'identitas', 'label' => 'No Pegawai', 'rules' => 'required'),
             array('field' => 'no_telp', 'label' => 'Nomor Telepon', 'rules' => 'required'),
             array('field' => 'kota', 'label' => 'Kota', 'rules' => 'required')

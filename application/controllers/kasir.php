@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Kasir extends CI_Controller {
 	function __construct()
@@ -8,7 +8,7 @@ class Kasir extends CI_Controller {
         $this->load->model('kasir_model','',TRUE);
         $this->data = NULL;
         
-        if($this->session->userdata('id')!=1) redirect('login');
+        if($this->session->userdata('role') != 1) redirect('login');
     }
 
     function index()
@@ -20,11 +20,11 @@ class Kasir extends CI_Controller {
 
     function pesanan()
     {
-        if($this->uri->segment(3) == "all")
+        if($this->uri->segment(3) === "all")
         {
             $this->kasir_model->get_list_orders();
         }
-        else if($this->uri->segment(3) == "ambil")
+        else if($this->uri->segment(3) === "ambil")
         {
             $this->kasir_model->get_list_orders_ambil();   
         }
@@ -39,7 +39,7 @@ class Kasir extends CI_Controller {
 
     function members()
     {
-        $details['list_members'] = $this->kasir_model->get_list_members() == FALSE ? '' : $this->kasir_model->get_list_members();
+        $details['list_members'] = $this->kasir_model->get_list_members() === FALSE ? '' : $this->kasir_model->get_list_members();
         $this->load->view('kasir/templates/header');
         $this->load->view('kasir/anggota',$details);
         $this->load->view('kasir/templates/footer');   
@@ -50,7 +50,7 @@ class Kasir extends CI_Controller {
     	$name = $this->input->get('q');
     	$res = $this->kasir_model->get_like_barang($name);
     	
-        echo json_encode($res);
+        echo $this->json_encode($res);
     }
 
     function barang_masuk()
@@ -58,7 +58,7 @@ class Kasir extends CI_Controller {
         $name = $this->input->get('name');
         $details = $this->kasir_model->get_barang($name);
 
-        echo json_encode($details);
+        echo $this->json_encode($details);
     }
 
     function register_member()
@@ -70,8 +70,7 @@ class Kasir extends CI_Controller {
         $kota = $this->input->get('kota');
 
         $this->kasir_model->insert_member($no_id,$nama,$pekerjaan,$telp,$kota);
-        redirect(site_url('kasir/members'));
-        // header("location:".site_url('kasir/members'));
+        redirect('kasir/members');
     }
 
     function edit_member()
@@ -84,7 +83,7 @@ class Kasir extends CI_Controller {
         $kota = $this->input->get('kota');
 
         $this->kasir_model->edit_member($id,$no_id,$nama,$pekerjaan,$telp,$kota);
-        redirect(site_url('kasir/members'));
+        redirect('kasir/members');
     }
 
     function hapus_member()
@@ -92,7 +91,7 @@ class Kasir extends CI_Controller {
         $id = $this->input->get('id');
 
         $this->kasir_model->delete_member($id);
-        redirect(site_url('kasir/members'));
+        redirect('kasir/members');
     }
 
     function cek_member()
@@ -102,7 +101,7 @@ class Kasir extends CI_Controller {
         $res = $this->kasir_model->get_member($no_ktp);
 
         // $res = FALSE ? "false" : json_encode($res);
-        echo json_encode($res);
+        echo $this->json_encode($res);
     }
 
     function transaksi_pembelian()
@@ -323,6 +322,41 @@ class Kasir extends CI_Controller {
         $this->pdf->Write(5, 'Customer Service');
         
         $this->pdf->Output('Nota Order #'.$id_beli.'.pdf', 'D');
+    }
+    
+    function json_encode($data) {
+        switch ($type = gettype($data)) {
+            case 'NULL':
+                return 'null';
+            case 'boolean':
+                return ($data ? 'true' : 'false');
+            case 'integer':
+            case 'double':
+            case 'float':
+                return $data;
+            case 'string':
+                return '"' . addslashes($data) . '"';
+            case 'object':
+                $data = get_object_vars($data);
+            case 'array':
+                $output_index_count = 0;
+                $output_indexed = array();
+                $output_associative = array();
+                foreach ($data as $key => $value) {
+                    $output_indexed[] = $this->json_encode($value);
+                    $output_associative[] = $this->json_encode($key) . ':' . $this->json_encode($value);
+                    if ($output_index_count !== NULL && $output_index_count++ !== $key) {
+                        $output_index_count = NULL;
+                    }
+                }
+                if ($output_index_count !== NULL) {
+                    return '[' . implode(',', $output_indexed) . ']';
+                } else {
+                    return '{' . implode(',', $output_associative) . '}';
+                }
+            default:
+                return ''; // Not supported
+        }
     }
 }
 
