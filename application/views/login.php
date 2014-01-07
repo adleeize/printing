@@ -12,14 +12,15 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/metro/css/metro-bootstrap-responsive.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/metro/css/docs.css');?>">
     <link href="<?php echo base_url('assets/metro/js/prettify/prettify.css');?>" rel="stylesheet">
-
+    <script>
+        window.BASE_URL='<?php echo base_url();?>';
+    </script>
     <script src="<?php echo base_url('assets/metro/js/jquery/jquery.min.js');?>"></script>
     <script src="<?php echo base_url('assets/metro/js/jquery/jquery.widget.min.js');?>"></script>
     <script src="<?php echo base_url('assets/metro/js/prettify/prettify.js');?>"></script>
 
     <script src="<?php echo base_url('assets/metro/js/metro/metro-loader.js');?>"></script>
     <script src="<?php echo base_url('assets/metro/js/docs.js');?>"></script>
-    <script src="<?php echo base_url('assets/metro/js/github.info.js');?>"></script>
     <title>Login User</title>
 </head>
 <body class="metro">

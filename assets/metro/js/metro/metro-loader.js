@@ -7,30 +7,30 @@ var plugins = [
     'date-format',
     'calendar',
     'datepicker',
-    'carousel',
-    'countdown',
+    // 'carousel',
+    // 'countdown',
     'dropdown',
     'input-control',
-    'live-tile',
+    // 'live-tile',
     //'drag-tile',
-    'progressbar',
-    'rating',
-    'slider',
+    // 'progressbar',
+    // 'rating',
+    // 'slider',
     'tab-control',
     'table',
     'times',
     'dialog',
     'notify',
-    'listview',
-    'treeview',
+    // 'listview',
+    // 'treeview',
     'fluentmenu',
     'hint',
     'streamer',
-    'scroll'
+    // 'scroll'
 
 
 ];
 
 $.each(plugins, function(i, plugin){
-    $("<script/>").attr('src', 'http://localhost/printing/assets/metro/js/metro/metro-'+plugin+'.js').appendTo($('head'));
+    $("<script/>").attr('src', BASE_URL+'assets/metro/js/metro/metro-'+plugin+'.js').appendTo($('head'));
 });

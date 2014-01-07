@@ -85,7 +85,7 @@
                 width : 400,
                 padding: 25,
                 onShow: function(_dialog){
-                    var content = '<table><form action="<?php echo site_url()?>kasir/register_member">' +
+                    var content = '<table><form action="'+BASE_URL+'kasir/register_member">' +
                             '<tr>' +
                             '<td><label>No KTP</label></td>' +
                             '<td><div class="input-control text"><input type="text" placeholder="Nomer Identitas" name="no_ktp" required><button class="btn-clear"></button></div> ' +
@@ -137,7 +137,7 @@
                 width : 400,
                 padding: 25,
                 onShow: function(_dialog){
-                    var content = '<table><form action="<?php echo site_url()?>kasir/edit_member">' +
+                    var content = '<table><form action="'+BASE_URL+'kasir/edit_member">' +
                             '<tr>' +
                             '<td><label>No KTP</label><input type="hidden" name="edit-id" value="'+id+'"></td>' +
                             '<td><div class="input-control text"><input type="text" value="'+no_ktp+'" placeholder="Nomer Identitas" name="no_ktp" required><button class="btn-clear"></button></div> ' +
@@ -183,7 +183,7 @@
                 width: 400,
                 padding: 20,
                 content: 'Anda yakin mau menghapus Member ini?' +
-                         '<form action="<?php echo site_url();?>kasir/hapus_member">' +
+                         '<form action="'+BASE_URL+'kasir/hapus_member">' +
                          '<input type="hidden" name="id" value="'+id+'"><br/><br/><br/>' +
                          '<span style="padding-left:130px;"><input type="submit" class="danger" value="Hapus"></span>' +
                          '</form>'

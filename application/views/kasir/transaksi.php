@@ -150,7 +150,7 @@
             $("#cek_member").click(function(e){
                 e.preventDefault();
                 var y;
-                $.get('<?php echo site_url("kasir/cek_member");?>',{id : $("#id_member").val()}, function(data) {
+                $.get(BASE_URL+"kasir/cek_member",{id : $("#id_member").val()}, function(data) {
                     if(data!==false){
                         console.log(data);
                         $("#respon_cek").html("");
@@ -174,7 +174,7 @@
             var member = $("#member").prop("checked");
             var a = "";
             $.ajax({
-                url : "<?php echo base_url('kasir/barang_masuk');?>",
+                url : BASE_URL+'kasir/barang_masuk',
                 data : {name : $("#barang").val()},
                 dataType : "json",
                 success : function(data){
@@ -398,10 +398,10 @@
                 if(id_member) var member = id_member;
                 else var member = '';
                 // ajax pembelian
-                $.post('<?php echo site_url("kasir/transaksi_pembelian");?>', {dp:dp,tot_harga:total_harga,status:status,member:member}, function(data) {
+                $.post(BASE_URL+"kasir/transaksi_pembelian", {dp:dp,tot_harga:total_harga,status:status,member:member}, function(data) {
                     if(data>0){
                         $.ajax({
-                            url: '<?php echo site_url("kasir/detail_transaksi_pembelian")?>',
+                            url: BASE_URL+"kasir/detail_transaksi_pembelian",
                             type: 'POST',
                             data: {id_trans : data,id_barang: id_msg_barang,jumlah_brg: jumlah_msg_barang,luas_barang: luas_msg_barang,harga_barang: harga_msg_barang},
                             beforeSend : function(){
@@ -434,7 +434,7 @@
                 //You could use this to limit results
                 //if(val.length < 3) return;
                 console.log(val);
-                $.get("<?php echo site_url('kasir/autocomplete_barang');?>", {q:val}, function(res) {
+                $.get(BASE_URL+'kasir/autocomplete_barang', {q:val}, function(res) {
                     var dataList = $("#searchresults");
                     dataList.empty();
                     console.log(res);

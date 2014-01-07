@@ -120,7 +120,7 @@
             });
             $("#proses-yes").click(function(e){
                 e.preventDefault();
-                $.get('<?php echo site_url("kasir/proses_transaksi");?>',{id : id}, function(data) {
+                $.get(BASE_URL+"kasir/proses_transaksi",{id : id}, function(data) {
                     location.reload();
                 });
             });
@@ -142,7 +142,7 @@
             });
             $("#proses-yes").click(function(e){
                 e.preventDefault();
-                $.get('<?php echo site_url("kasir/delete_transaksi");?>',{id : id}, function(data) {
+                $.get(BASE_URL+"kasir/delete_transaksi",{id : id}, function(data) {
                     location.reload();
                 });
             });
