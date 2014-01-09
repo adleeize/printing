@@ -7,19 +7,22 @@ class Kasir extends CI_Controller {
         $this->load->helper(array('form', 'url','date'));
         $this->load->model('kasir_model','',TRUE);
         $this->data = NULL;
-        
+        $this->output->enable_profiler(FALSE);
         if($this->session->userdata('role') != 1) redirect('login');
     }
 
     function index()
     {
+        $js=array('js'=>'yes','jscript'=>array('core','button-set','input-control','date-format','calendar','datepicker','table','dialog','times','touch-handler'));
     	$this->load->view('kasir/templates/header');
     	$this->load->view('kasir/transaksi');
-    	$this->load->view('kasir/templates/footer');
+    	$this->load->view('kasir/templates/footer',$js);
     }
 
     function pesanan()
     {
+        $js=array('js'=>'yes','jscript'=>array('core','button-set','input-control','table','dialog','times','touch-handler'));
+
         if($this->uri->segment(3) === "all")
         {
             $this->kasir_model->get_list_orders();
@@ -34,15 +37,16 @@ class Kasir extends CI_Controller {
         }
         $this->load->view('kasir/templates/header');
         $this->load->view('kasir/order', $this->data);
-        $this->load->view('kasir/templates/footer');
+        $this->load->view('kasir/templates/footer',$js);
     }
 
     function members()
     {
+        $js=array('js'=>'yes','jscript'=>array('core','button-set','input-control','table','dialog','times','touch-handler'));
         $details['list_members'] = $this->kasir_model->get_list_members() === FALSE ? '' : $this->kasir_model->get_list_members();
         $this->load->view('kasir/templates/header');
         $this->load->view('kasir/anggota',$details);
-        $this->load->view('kasir/templates/footer');   
+        $this->load->view('kasir/templates/footer',$js);   
     }
 
     function autocomplete_barang()

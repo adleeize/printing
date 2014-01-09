@@ -32,8 +32,13 @@
             2013-2014, Sikasir &copy; by  <a href="http://twitter.com/labdasfik" class="fg-yellow">DSB-MHA</a>
         </div>
     </footer>
-
-    <!--<script src="<?php //echo base_url('assets/metro/js/hitua.js');?>"></script>-->
-
+    <?php
+        if(isset($jscript)){
+            foreach ($jscript as $js){
+                echo "<script src='".base_url()."assets/metro/js/metro/metro-".$js.".js'></script>";
+            }
+        }
+    ?>  
+<script src="<?php echo base_url('assets/metro/js/docs.js');?>"></script>
 </body>
 </html>

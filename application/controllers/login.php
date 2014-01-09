@@ -17,6 +17,7 @@ class Login extends CI_Controller {
 
     function index()
     {
+        $details['jscript'] = array('core','button-set','dropdown','input-control');
         $details['list_roles'] = $this->login_model->get_list_role();
         $this->load->view('login',$details);
     }
