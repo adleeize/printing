@@ -152,7 +152,7 @@
                 var y;
                 $.get(BASE_URL+"kasir/cek_member",{id : $("#id_member").val()}, function(data) {
                     if(data!==false){
-                        console.log(data);
+                        // console.log(data);
                         $("#respon_cek").html("");
                         y = '<span id="adagan"><i class="icon-checkmark fg-green on-right on-left"></i>Tersedia</span>';
                         $("#respon_cek").append(y);
@@ -160,7 +160,7 @@
                         $("#tempat_member_pemesan").append("<input id='id_member_pemesan' type='hidden' value='"+data[0].id+"'>");
                     }
                     else{
-                        console.log(0);
+                        // console.log(0);
                         $("#respon_cek").html("");
                         y = '<span id="adagan"><i class="icon-cancel-2 fg-red on-right on-left"></i>Tak ada</span>';
                         $("#respon_cek").append(y);
